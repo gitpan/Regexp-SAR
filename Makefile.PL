@@ -10,7 +10,7 @@ use ExtUtils::MakeMaker;
 
 
 my %WriteMakefileArgs = (
-  "ABSTRACT" => "perl module implementing regular expression engine for handling matching events",
+  "ABSTRACT" => "perl module implementing regular expression engine for handling matching events (Simple API Regexp)",
   "AUTHOR" => "Pinkhas Nisanov <pinkhas\@nisanov.com>",
   "CONFIGURE_REQUIRES" => {
     "ExtUtils::MakeMaker" => 0
@@ -20,7 +20,7 @@ my %WriteMakefileArgs = (
   "LICENSE" => "perl",
   "NAME" => "Regexp::SAR",
   "PREREQ_PM" => {},
-  "VERSION" => "0.001",
+  "VERSION" => "0.002",
   "test" => {
     "TESTS" => "t/*.t"
   }

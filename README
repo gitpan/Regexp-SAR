@@ -1,3 +1,8 @@
+NAME
+
+    Regexp::SAR - perl module implementing regular expression engine for
+    handling matching events (Simple API Regexp)
+
 SYNOPSIS
 
         use Regexp::SAR;
@@ -76,15 +81,21 @@ DESCRIPTION
     Regexp::SAR (Simple API for Regexp) module build trie structure for
     many regular expressions and store match handler for each regular
     expression that will be called when match occurs. There is no limit for
-    number of regular expressions. On match handler called immediately and
+    number of regular expressions. Handler called immediately on match and
     it get matching start and end positions in matched string. Matching can
     be started from any point in matching string. Match handler can decide
     from which point matching should continue or it can stop matching at
     all.
 
+METHODS
+
+ new()
+
     Create new Regexp::SAR object. Every object store it's own trie
     structure separately. When object goes out of scope object and it's
     internal data structure will be cleared from memory.
+
+ addRegexp
 
     Add regular expression for handling. First parameter is regular
     expression string. Second parameter is reference to subroutine that
@@ -99,27 +110,39 @@ DESCRIPTION
                                   my ($from, $to) = @_;
                                   # $from is 1
                                   # $to is 4
-                                  $sar->stopMatch(); 
+                                  $sar->stopMatch();
                               });
       $sar->match($string);
+
+ match
 
     Process matching all added regular expressions on matching string
     passed to match as parameter. match can accept matching string as
     reference to scalar, it useful when matching string is very long.
 
+ matchFrom
+
     Process matching from specific position. Get two parameters: matching
     string and number from which start processing. match subroutine is
     syntactic sugar form matchFrom when second parameter is 0.
 
+ matchAt
+
     Process matching from specific position and do not continue on next
     characters.
+
+ continueFrom
 
     continueFrom subroutine called in matching handler and define from
     which position continue matching after it finished matching on current
     position.
 
+ stopMatch
+
     stopMatch subroutine called in matching handler and send signal to
     Regexp::SAR object do not continue matching on next characters.
+
+Matching rules
 
       * Continue matching process character by character even if there was
       match.
@@ -140,10 +163,9 @@ DESCRIPTION
       position.
 
         my $sar = new Regexp::SAR;
-        my $string = 'new york';
         $sar->addRegexp('new', sub { print "new found\n"; });
         $sar->addRegexp('new york', sub { print "new york found\n"; });
-        $sar->match($string);
+        $sar->match('new york');
 
       Above code will print "new found", then print "new york found"
 
@@ -151,12 +173,13 @@ DESCRIPTION
       match same matched string.
 
         my $sar = new Regexp::SAR;
-        my $string = '1';
         $sar->addRegexp('1', sub { print "one found\n"; });
-        $sar->addRegexp('\d', sub { print "number found\n"; });
-        $sar->match($string);
+        $sar->addRegexp('\d', sub { print "digit found\n"; });
+        $sar->match('1');
 
-      Above code will print both 'one found' and 'number found'
+      Above code will print both 'one found' and 'digit found'
+
+Character class abbreviations
 
       * '.' matches any character
 
@@ -171,78 +194,36 @@ DESCRIPTION
       * '\^' matches any character that is not followed character or class
       abbreviation
 
+Matching repetitions
+
       * '?' means: match 1 or 0 times
 
       * '*' means: match 0 or more times
 
       * '+' means: match 1 or more times
 
-      For matching '\' character in matching string regular expression
-      string should iclude it 4 times '\\\\'.
+'\' escape character
 
-        my $sar = new Regexp::SAR;
-        my $string = 'a b\c d';
-        $sar->addRegexp('b\\\\c', sub { print "Matched\n"; });
-        $sar->match($string);
+    For matching '\' character in matching string regular expression string
+    should iclude it 4 times '\\\\'.
 
-      Currently this module does not support unicode matching
+      my $sar = new Regexp::SAR;
+      my $string = 'a b\c d';
+      $sar->addRegexp('b\\\\c', sub { print "Matched\n"; });
+      $sar->match($string);
 
-POD ERRORS
+Unicode support
 
-    Hey! The above document had some coding errors, which are explained
-    below:
+    Currently this module does not support unicode matching
 
-    Around line 85:
+AUTHOR
 
-      Unknown directive: =method
+      Pinkhas Nisanov <pinkhas@nisanov.com>
 
-    Around line 91:
+COPYRIGHT AND LICENSE
 
-      Unknown directive: =method
+    This software is copyright (c) 2012 by Pinkhas Nisanov.
 
-    Around line 110:
-
-      Unknown directive: =method
-
-    Around line 116:
-
-      Unknown directive: =method
-
-    Around line 122:
-
-      Unknown directive: =method
-
-    Around line 127:
-
-      Unknown directive: =method
-
-    Around line 133:
-
-      Unknown directive: =method
-
-    Around line 138:
-
-      Unknown directive: =head
-
-    Around line 140:
-
-      '=item' outside of any '=over'
-
-      =over without closing =back
-
-    Around line 181:
-
-      Unknown directive: =head
-
-    Around line 207:
-
-      Unknown directive: =head
-
-    Around line 221:
-
-      Unknown directive: =head
-
-    Around line 231:
-
-      Unknown directive: =head
+    This is free software; you can redistribute it and/or modify it under
+    the same terms as the Perl 5 programming language system itself.
 
