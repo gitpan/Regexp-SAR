@@ -1,7 +1,7 @@
 NAME
 
     Regexp::SAR - perl module implementing regular expression engine for
-    handling matching events (Simple API Regexp)
+    handling matching events (Simple API for Regexp)
 
 SYNOPSIS
 
@@ -73,7 +73,7 @@ SYNOPSIS
         #################################################
         #negative matching
         my $sar5 = new Regexp::SAR;
-        $sar5->addRegexp('a\^\d+c', sub { print "Matched\n"; });
+        $sar5->addRegexp('a\^\d+b', sub { print "Matched\n"; });
         $sar5->match('axyzb');
 
 DESCRIPTION
@@ -216,14 +216,7 @@ Unicode support
 
     Currently this module does not support unicode matching
 
-AUTHOR
+Examples
 
-      Pinkhas Nisanov <pinkhas@nisanov.com>
-
-COPYRIGHT AND LICENSE
-
-    This software is copyright (c) 2012 by Pinkhas Nisanov.
-
-    This is free software; you can redistribute it and/or modify it under
-    the same terms as the Perl 5 programming language system itself.
+    Many usage examples can be found in "OOUsage.t" file
 
